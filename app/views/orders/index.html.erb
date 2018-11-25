@@ -1,0 +1,13 @@
+<% @orders.each do |order| %>
+    <h2>
+      <%= "Order No:" %>
+      <%= link_to order.id, order %>
+    </h2>
+
+    <%= link_to “New Order”, new_order_path %>
+
+    <p>
+      <%= time_ago_in_words(order.created_at) %>
+    </p>
+<% end %>
+  

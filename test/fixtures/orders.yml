@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  apple: 1
+  orange: 1
+  total: 1
+  token: MyString
+  txn_id: MyString
+  status: MyString
+
+two:
+  apple: 1
+  orange: 1
+  total: 1
+  token: MyString
+  txn_id: MyString
+  status: MyString
