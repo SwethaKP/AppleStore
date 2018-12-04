@@ -1,0 +1,24 @@
+<div class="page">
+
+<div class="header">
+  <h1>Fruit Store</h1>
+</div>
+<div class="pagehead">
+<h2><u>Order Complete : <%= @order.id %> ( Rs : <%= @order.total/100 %> )</u><h2>
+</div>
+
+
+<!-- Displaying the Txn Details -->
+<h3><b>Status of the order :</b></h3>
+  <%= @order.status %>
+<h3><b> Transaction token :</b></h3>
+  <%= @order.token %>
+<h3><b> Transaction ID :</b></h3>
+  <%= @order.txn_id %>
+
+<br>
+<br>
+<%= link_to "Back to My Orders", orders_path %>
+
+
+

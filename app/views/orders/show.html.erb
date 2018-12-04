@@ -1,5 +1,151 @@
-<h2> No. of Apples </h2>	
-<h1> <%= @order.apple %> </h1>	
-<h2> No. of Oranges </h2>	
-<h1> <%= @order.orange %> </h1>
-<%= link_to "All My Orders", orders_path  %>
+<div class="page">
+
+<div class="header">
+  <h1>Fruit Store</h1>
+</div>
+
+
+<!-- Displaying the Order total-->
+<div class="pagehead">
+	<h2>Order Details</h2>
+</div>
+
+<p id="demo"></p>
+
+<div class="input">
+<p>
+ 	Total Amount : Rs.
+ 	<% if @order %>
+ 		<% @order.update_attributes(:total => (@order.apple*20) + (@order.orange*15))%>
+ 	<% end %>
+ 	<%= @order.total %>
+</p>
+</div>
+
+<!-- Importing the Simpl libraries-->
+<script
+	id="getsimpl"
+	data-env="sandbox"
+	data-merchant-id="3e48e677d4c9f59eb00f694366567aed"
+	src="https://cdn.getsimpl.com/simpl-custom-v1.min.js">
+</script>
+
+<script 
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+</script>
+
+
+<br>
+
+<!-- Keeping Simpl button hidden when page loads -->
+<div class="input">
+		<button id="Pay">Proceed to Pay</button>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<button id="simpl-button" style="display:none;"	>Simpl - Pay Later</button>
+		<button id="order-details" style="display:none;">See Order Details</button>
+
+</div>
+
+
+<!-- Integration begins -->
+
+<script> 
+	// Assigning variables
+	var no_of_apples = '<%= @order.apple%>';
+	var no_of_oranges = '<%= @order.orange%>';	
+	var total = '<%= @order.total%>';
+	var email_id = '<%= current_user.email%>';
+	var phone_num = '<%= current_user.mobile%>';
+	var order_num = '<%= @order.id%>';
+	
+	// Checking if those variables are assigned correctly
+	console.log(total);
+	console.log(email_id);
+	console.log(phone_num);
+	console.log(order_num);
+
+//--------------------------------------------------------------
+
+// On clicking "Proceed to Cart" <start>
+
+	$("#Pay").on('click',function(){
+	
+	//On clicking the "Proceed to Pay" button, "setApprovalConfig" fn is called
+		window.Simpl && window.Simpl.setApprovalConfig({
+	    email: email_id,
+		phone_number: phone_num
+		}); 
+
+		window.Simpl && window.Simpl.on('approval', function yep() {
+	//If Approved, the Simpl button is shown	
+			$('#simpl-button').show();
+	    	document.getElementById('simpl-button').style.display = 'block';
+
+	//If Approved, "setAuthorizeConfig" fn is called and OrderID is assigned against the order in the Orders table
+	    	window.Simpl && window.Simpl.setAuthorizeConfig({
+      			order_id: order_num	
+    		});
+
+	//The order amount is sent to Simpl in paise	
+			window.Simpl && window.Simpl.setTransactionAmount(
+  				window.Simpl.convertRupeeToPaise(total)
+			);    
+
+	//If not approved, the Simpl button is not shown	
+	    }, function nope() {
+	    	document.getElementById('simpl-button').style.display = 'none';
+	    	window.alert("Sorry! You are not authorised to pay via Simpl.");
+	  	});
+
+	});
+
+// On clicking "Proceed to Cart" <end>
+
+//--------------------------------------------------------------
+
+// On clicking "Pay with Simpl" <start>
+
+	document.getElementById('simpl-button').addEventListener('click',function(){
+    	window.Simpl && window.Simpl.authorizeTransaction();
+  	}, false); 
+
+	// If Success, the response parameter from Simpl includes the status and token generated
+	// {status: 'success', transaction_token: '123'}
+  	window.Simpl && window.Simpl.on('success', function(response) {
+	  	var txn_token = response.transaction_token;
+
+	  	// making the AJAX call to assign the txn_token to Order.token
+		$.ajax({
+		   url:'/orders/' + order_num, 
+		   data:(
+		     'token=' + txn_token
+		   )
+		});
+	});
+
+	
+  	// If Failure, the response parameter from Simpl includes the status and token generated
+	// {status: 'error', error_message: 'XYZ'}
+	window.Simpl && window.Simpl.on('error', function(response) {
+	  console.log("Error",response.error_message);
+	});
+
+// On clicking "Pay with Simpl" <end>
+
+</script>
+
+<!-- to make total in paise -->
+<% @order.update_attributes(:total => @order.total*100) %>
+<% @order.save %>
+
+<br>
+
+<div class="input">
+<%= render 'form1' %>
+</div>
+
+

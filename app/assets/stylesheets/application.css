@@ -13,3 +13,51 @@
  *= require_tree .
  *= require_self
  */
+ 
+/* The header across all pages */
+
+ .page {
+    margin: auto 10px;
+    width: auto;
+    height: 10000px;
+    background-color: #D6FEE3;
+}
+
+.header {
+    background-color: #4FF1A0;
+    text-align: center;
+    padding: 1px;
+}
+
+.pagehead {
+    text-align: left;
+    margin: 40px 10px;
+    color: #F3A548;
+}
+
+/* The navbar container */
+.menu {
+    overflow: hidden;
+    background-color: #333;
+}
+
+/* Navbar links */
+.menu a {
+    float: right;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+/* Links - change color on hover */
+.topnav a:hover {
+    background-color: #CEDC67;
+    color: black;
+}
+
+.input {
+    margin: 10px;
+}
+

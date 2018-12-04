@@ -1,23 +1,30 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Apple Store</title>
+    <title>Fruit Store</title>
+    <%= Gon::Base.render_data %>
+    <%= include_gon %>
     <%= csrf_meta_tags %>
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
-    <header>
-    <div class='header_inner'>
-      <nav>
-      </nav>
-    </div>
-    </header>
+    <div class="page">
+
+    <% if user_signed_in? %>
+      <div class="menu">
+        <%= link_to "Log Out", destroy_user_session_path, method: :delete %> 
+        <%= link_to "All My Orders", orders_path  %>
+        <%= link_to "New Order", new_order_path %>
+      </div>
+    <% end %>
   	
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
+    <p class="notice"> <%= notice %> </p>
+    <p class="alert"> <%= alert %> </p>
 
     <%= yield %>
+    
+  </div>
   </body>
 </html>

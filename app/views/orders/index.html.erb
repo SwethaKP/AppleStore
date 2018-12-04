@@ -1,13 +1,35 @@
-<% @orders.each do |order| %>
-    <h2>
-      <%= "Order No:" %>
-      <%= link_to order.id, order %>
-    </h2>
+<div class="header">
+  <h1>Fruit Store</h1>
+</div>
 
-    <%= link_to “New Order”, new_order_path %>
+<div class="pagehead">
+  <h2>My Order History</h2>
+</div>
 
-    <p>
-      <%= time_ago_in_words(order.created_at) %>
-    </p>
+
+<% @orders.reverse_each do |order| %>
+  <div class="input">
+	  <h3>
+	  	<%= "Order No:" %>
+	    <%= order.id %>
+	  </h3>
+	  <p>
+	  	<b><%= "Status: " %></b>
+		<%= order.status %> 
+		<br>
+		<b><%= "Transaction token: " %></b>
+		<%= order.token %> 
+		<br>
+		<b><%= "Transaction ID: " %></b>
+		<%= order.txn_id %> 
+	    <br>
+	    <%= "Created " %>
+	    <b><%= time_ago_in_words(order.created_at) %></b>
+	    <%= " ago" %>
+	    <br>
+	    <br>
+	  </p>
+ </div>
 <% end %>
-  
+
+
