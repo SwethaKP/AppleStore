@@ -125,6 +125,8 @@
 		     'token=' + txn_token
 		   )
 		});
+		document.getElementById('simpl-button').style.display = 'none';
+		document.getElementById('Pay').style.display = 'none';
 	});
 
 	
@@ -142,6 +144,8 @@
 <% @order.update_attributes(:total => @order.total*100) %>
 <% @order.save %>
 
+<br>
+<br>
 <br>
 
 <div class="input">
